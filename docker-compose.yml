@@ -1,0 +1,52 @@
+version: '3'
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: ./Docker/prod.Dockerfile
+      args:
+        BUILD_DIR: "${BUILD_DIR}"
+    container_name: mp_build_app
+#    volumes:
+#      - "${BUILD_DIR}:/var/www/localhost/htdocs"
+    restart: unless-stopped
+    tty: true
+    hostname: localhost
+    working_dir: /var/www
+    networks:
+      - app-network
+    ports:
+      - "8000:80"
+      - "25:25"
+
+  db:
+    image: mariadb
+    container_name: mp_build_db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: mp_app
+      MYSQL_ROOT_PASSWORD: toor
+    volumes:
+      - mp_build_dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mp_build_mailhog
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mp_build_dbdata:
+    driver: local
