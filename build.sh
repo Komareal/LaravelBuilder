@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 
+cd "$2" || exit
+
 # Export env vars
-set -o allexport
-source .env
-set +o allexport
+APP_DIR="$1"
+BUILD_DIR="./build"
 
 rm -rf "${BUILD_DIR}"
 mkdir "${BUILD_DIR}"
 
-echo "Copying files to build directory... Done"
+echo "Copying files to build directory..."
 # copy the project to the build directory
 rsync -a \
---exclude-from=.buildexclude \
+--exclude-from="${APP_DIR}"/.buildexclude \
 --exclude-from="${APP_DIR}"/.gitignore \
 "${APP_DIR}"/ "${BUILD_DIR}"
 
@@ -23,10 +24,12 @@ cp "${APP_DIR}"/.env.production "${BUILD_DIR}"/.env
 find "${BUILD_DIR}"/storage -type f -delete
 find "${BUILD_DIR}"/bootstrap/cache -type f -delete
 
+echo "Copying Done"
 
 cd "${BUILD_DIR}" || exit
 
-echo "Copying files to build directory... Done"
+pwd
+
 
 # Install composer dependencies
 echo "Installing composer dependencies..."
