@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Set working directory to the directory of this script
+PARENT_PATH=$(
+	cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+	pwd -P
+)
+
+cd "$PARENT_PATH" || exit
+
+# Export env vars
+set -o allexport
+source ../.env
+set +o allexport
+
+while [ $# -gt 0 ]; do
+	case $1 in
+	-b | --build | --build-app)
+		sh "./build"
+		shift
+		;;
+	esac
+done
+
+sh "$BUILDER_DIR/deploy.sh" \
+	"$PRODUCTION_SFTP_USER@$PRODUCTION_SFTP_HOST:$PRODUCTION_SFTP_PATH" \
+	"$PRODUCTION_SFTP_PORT" \
+	"$PRODUCTION_SFTP_PASSWORD" \
+	"$PRODUCTION_SFTP_MOUNT_POINT" \
+	"$PRODUCTION_ROOT_PATH" \
+	"$BUILDER_DIR" \
+	"$APP_NAME"

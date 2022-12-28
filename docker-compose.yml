@@ -6,7 +6,7 @@ services:
       dockerfile: ./Docker/prod.Dockerfile
       args:
         BUILD_DIR: "${BUILD_DIR:-./build}"
-    container_name: mp_build_app
+    container_name: "$APP_NAME-build_app"
 #    volumes:
 #      - "./build:/var/www/localhost/htdocs"
     restart: unless-stopped
@@ -16,27 +16,27 @@ services:
     networks:
       - app-network
     ports:
-      - "8000:80"
+      - "80:80"
       - "25:25"
 
   db:
     image: mariadb
-    container_name: mp_build_db
+    container_name: "$APP_NAME-build_db"
     restart: unless-stopped
     tty: true
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: mp_app
+      MYSQL_DATABASE: app
       MYSQL_ROOT_PASSWORD: toor
     volumes:
-      - mp_build_dbdata:/var/lib/mysql
+      - build_dbdata:/var/lib/mysql
     networks:
       - app-network
 
   mailhog:
     image: mailhog/mailhog
-    container_name: mp_build_mailhog
+    container_name: "$APP_NAME-build_mailhog"
     ports:
       - "8025:8025"
       - "1025:1025"
@@ -48,5 +48,5 @@ networks:
     driver: bridge
 
 volumes:
-  mp_build_dbdata:
+  build_dbdata:
     driver: local

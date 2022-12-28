@@ -4,10 +4,16 @@ cd "$2" || exit
 
 # Export env vars
 APP_DIR="$1"
-BUILD_DIR="./build"
+BUILD_DIR="./builds/$3"
 
 rm -rf "${BUILD_DIR}"
 mkdir "${BUILD_DIR}"
+
+# make builder .env file
+echo "APP_NAME=$3" > .env
+echo "APP_DIR=$APP_DIR" >> .env
+echo "BUILD_DIR=$BUILD_DIR" >> .env
+
 
 echo "Copying files to build directory..."
 # copy the project to the build directory

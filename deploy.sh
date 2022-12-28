@@ -5,7 +5,7 @@ cd "$6" || exit
 
 
 
-BUILD_DIR="./build"
+BUILD_DIR="./builds/$3"
 
 if mountpoint -q "$4"; then
   echo "$4 already mounted"

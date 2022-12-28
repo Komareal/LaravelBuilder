@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# Set working directory to the directory of this script
+PARENT_PATH=$(
+	cd "$(dirname "${BASH_SOURCE[0]}")" || exit
+	pwd -P
+)
+
+cd "$PARENT_PATH" || exit
+pwd
+
+# Export env vars
+set -o allexport
+source ../.env
+set +o allexport
+
+cd ../
+APP_DIR="$(pwd)"
+
+sh "$BUILDER_DIR/build.sh" "$APP_DIR" "$BUILDER_DIR" "$APP_NAME"
