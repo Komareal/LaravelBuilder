@@ -1,0 +1,15 @@
+/.git
+/.idea
+/.vscode
+/.devcontainer
+/bin
+/docker
+docker-compose.yml
+.gitignore
+.buildexclude
+.editorconfig
+.env.example
+.env.prod_example
+.gitattributes
+phpunit.xml
+README.md

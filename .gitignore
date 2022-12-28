@@ -1,4 +1,4 @@
 /.env
-/builds/*
-/bin/.env
+/Builds/*
+/Examples/bin/.env
 /.idea

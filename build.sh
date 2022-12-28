@@ -4,7 +4,7 @@ cd "$2" || exit
 
 # Export env vars
 APP_DIR="$1"
-BUILD_DIR="./builds/$3"
+BUILD_DIR="./Builds/$3"
 
 rm -rf "${BUILD_DIR}"
 mkdir "${BUILD_DIR}"
